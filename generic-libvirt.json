@@ -193,10 +193,7 @@
         "compression_level": 9,
         "keep_input_artifact": false,
         "vagrantfile_template": "tpl/generic-{{split build_name \"-\" 1}}.rb",
-        "output": "output/generic-{{split build_name \"-\" 1}}-{{split build_name \"-\" 2}}-{{user `box_version`}}.box",
-        "include": [
-          "tpl/generic/info.json"
-        ]
+        "output": "output/generic-{{split build_name \"-\" 1}}-{{split build_name \"-\" 2}}-{{user `box_version`}}.box"
       },
       {
         "type": "checksum",

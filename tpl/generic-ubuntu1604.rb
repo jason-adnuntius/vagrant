@@ -2,7 +2,6 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
-
   config.vm.boot_timeout = 1800
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
@@ -16,3 +15,4 @@ Vagrant.configure(2) do |config|
     v.cpus = 2
   end
 end
+

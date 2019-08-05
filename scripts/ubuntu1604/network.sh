@@ -37,8 +37,8 @@ sysctl net.ipv6.conf.all.disable_ipv6=1
 printf "\nnet.ipv6.conf.all.disable_ipv6 = 1\n" >> /etc/sysctl.conf
 
 # Set the hostname, and then ensure it will resolve properly.
-printf "ubuntu1604.localdomain\n" > /etc/hostname
-printf "\n127.0.0.1 ubuntu1604.localdomain\n\n" >> /etc/hosts
+printf "localhost.localdomain\n" > /etc/hostname
+printf "\n127.0.0.1 localhost.localdomain\n\n" >> /etc/hosts
 
 # Clear out the existing automatic ifup rules.
 sed -i -e '/^auto/d' /etc/network/interfaces
@@ -50,15 +50,9 @@ printf "allow-hotplug eth0\n" >> /etc/network/interfaces
 printf "auto lo\n" >> /etc/network/interfaces
 printf "iface lo inet loopback\n" >> /etc/network/interfaces
 printf "iface eth0 inet dhcp\n" >> /etc/network/interfaces
-printf "dns-nameserver 4.2.2.1\n" >> /etc/network/interfaces
-printf "dns-nameserver 4.2.2.2\n" >> /etc/network/interfaces
-printf "dns-nameserver 208.67.220.220\n" >> /etc/network/interfaces
 
 # Adding a delay so dhclient will work properly.
 printf "pre-up sleep 2\n" >> /etc/network/interfaces
-
-# Ensure a nameserver is being used that won't return an IP for non-existent domain names.
-printf "nameserver 4.2.2.1\nnameserver 4.2.2.2\nnameserver 208.67.220.220\n" > /etc/resolv.conf
 
 # Install ifplugd so we can monitor and auto-configure nics.
 retry apt-get --assume-yes install ifplugd

@@ -18,3 +18,4 @@ systemctl stop snapd.service snapd.socket snapd.refresh.timer
 # Cleanup unused packages.
 apt-get --assume-yes autoremove; error
 apt-get --assume-yes autoclean; error
+
