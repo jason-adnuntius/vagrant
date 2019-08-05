@@ -65,3 +65,5 @@ retry apt-get --assume-yes -o Dpkg::Options::="--force-confnew" update; error
 retry apt-get --assume-yes -o Dpkg::Options::="--force-confnew" upgrade; error
 retry apt-get --assume-yes -o Dpkg::Options::="--force-confnew" dist-upgrade; error
 
+retry apt-get --assume-yes install libterm-readline-perl-perl cloud-guest-utils
+

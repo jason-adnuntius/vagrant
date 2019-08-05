@@ -1,6 +1,7 @@
 {
   "variables": {
-    "box_version": "{{env `VERSION`}}"
+    "box_version": "{{env `VERSION`}}",
+    "disk_size": "67584"
   },
   "provisioners": [
     {
@@ -103,7 +104,7 @@
         "<enter>"
       ],
       "format": "qcow2",
-      "disk_size": 32768,
+      "disk_size": "{{ user `disk_size` }}",
       "disk_discard": "unmap",
       "disk_cache": "unsafe",
       "disk_compression": true,
@@ -160,7 +161,7 @@
         " --- <enter>"
       ],
       "format": "qcow2",
-      "disk_size": 32768,
+      "disk_size": "{{ user `disk_size` }}",
       "disk_discard": "unmap",
       "disk_cache": "unsafe",
       "disk_compression": true,

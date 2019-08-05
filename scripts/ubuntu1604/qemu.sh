@@ -47,12 +47,3 @@ export DEBIAN_FRONTEND=noninteractive
 export DEBCONF_NONINTERACTIVE_SEEN=true
 
 retry apt-get --assume-yes install qemu-guest-agent; error
-
-# For some reason the VMWare tools are installed on QEMU guest images.
-systemctl disable open-vm-tools.service
-
-# Boosts the available entropy which allows magma to start faster.
-retry apt-get --assume-yes install haveged; error
-
-# Autostart the haveged daemon.
-systemctl enable haveged.service

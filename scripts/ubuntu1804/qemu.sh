@@ -41,4 +41,3 @@ export DEBIAN_FRONTEND=noninteractive
 export DEBCONF_NONINTERACTIVE_SEEN=true
 
 retry apt-get --assume-yes install qemu-guest-agent; error
-
