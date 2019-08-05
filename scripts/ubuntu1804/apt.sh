@@ -65,6 +65,3 @@ retry apt-get --assume-yes -o Dpkg::Options::="--force-confnew" update; error
 retry apt-get --assume-yes -o Dpkg::Options::="--force-confnew" upgrade; error
 retry apt-get --assume-yes -o Dpkg::Options::="--force-confnew" dist-upgrade; error
 
-# Needed to retrieve source code, and other misc system tools.
-retry apt-get --assume-yes install liberror-perl wget curl lsb-release psmisc; error
-
