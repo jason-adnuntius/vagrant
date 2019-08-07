@@ -37,13 +37,14 @@ error() {
 export DEBIAN_FRONTEND=noninteractive
 export DEBCONF_NONINTERACTIVE_SEEN=true
 
-# Temporarily disable IPv6, update the nameservers so packages download
-# properly. A more permanent soulution is applied by the network
-# configuration script.
+# Temporarily disable IPv6, so packages download properly. 
+# A more permanent solution is applied by the network configuration script.
 sysctl net.ipv6.conf.all.disable_ipv6=1
 
 # Disable upgrades to new releases.
-sed -i -e 's/^Prompt=.*$/Prompt=never/' /etc/update-manager/release-upgrades;
+if [ -f /etc/update-manager/release-upgrades ]; then
+	sed -i -e 's/^Prompt=.*$/Prompt=never/' /etc/update-manager/release-upgrades
+fi
 
 # If the apt configuration directory exists, we add our own config options.
 if [ -d /etc/apt/apt.conf.d/ ]; then
@@ -65,5 +66,6 @@ retry apt-get --assume-yes -o Dpkg::Options::="--force-confnew" update; error
 retry apt-get --assume-yes -o Dpkg::Options::="--force-confnew" upgrade; error
 retry apt-get --assume-yes -o Dpkg::Options::="--force-confnew" dist-upgrade; error
 
-retry apt-get --assume-yes install libterm-readline-perl-perl cloud-guest-utils
+# needed to avoid debconf config errors
+retry apt-get --assume-yes install libterm-readline-perl-perl; error
 

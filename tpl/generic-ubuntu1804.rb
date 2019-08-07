@@ -1,9 +1,12 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
+
 Vagrant.configure(2) do |config|
   config.vm.boot_timeout = 1800
-  config.vm.synced_folder ".", "/vagrant", disabled: true
+  config.vm.synced_folder ".", "/vagrant", type: "nfs"
+  config.nfs.verify_installed = false
 
   config.vm.box_check_update = true
 

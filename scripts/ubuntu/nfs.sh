@@ -27,17 +27,17 @@ retry() {
 }
 
 error() {
-        if [ $? -ne 0 ]; then
-                printf "\n\nqemu addons failed to install...\n\n";
-                exit 1
-        fi
+    if [ $? -ne 0 ]; then
+        printf "\n\napt failed...\n\n";
+        exit 1
+    fi
 }
 
-# Install the QEMU using Yum.
-printf "Installing the QEMU Tools.\n"
+printf "Installing NFS.\n"
 
 # To allow for autmated installs, we disable interactive configuration steps.
 export DEBIAN_FRONTEND=noninteractive
 export DEBCONF_NONINTERACTIVE_SEEN=true
 
-retry apt-get --assume-yes install qemu-guest-agent; error
+retry apt-get --assume-yes install nfs-common portmap; error
+
