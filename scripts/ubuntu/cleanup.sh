@@ -1,10 +1,10 @@
 #!/bin/bash
 
 error() {
-    if [ $? -ne 0 ]; then
-        printf "\n\napt failed...\n\n";
-        exit 1
-    fi
+  if [ $? -ne 0 ]; then
+    printf "\n\napt failed...\n\n";
+    exit 1
+  fi
 }
 
 # To allow for autmated installs, we disable interactive configuration steps.
@@ -19,3 +19,8 @@ systemctl stop snapd.service snapd.socket snapd.refresh.timer
 apt-get --assume-yes autoremove; error
 apt-get --assume-yes autoclean; error
 
+# Clear the random seed.
+rm -f /var/lib/systemd/random-seed
+
+# clean out the nameserver stuff
+sed -i '/nameserver/d' /etc/resolv.conf

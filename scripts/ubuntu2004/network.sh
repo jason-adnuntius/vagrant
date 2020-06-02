@@ -1,4 +1,9 @@
-#!/bin/bash -eux
+#!/bin/bash -ex
+
+# If the TERM environment variable is missing, then tput may produce spurrious error messages.
+if [[ ! -n "$TERM" ]] || [[ "$TERM" -eq "dumb" ]]; then
+  export TERM="vt100"
+fi
 
 retry() {
   local COUNT=1
@@ -26,33 +31,28 @@ retry() {
   return "${RESULT}"
 }
 
-# To allow for autmated installs, we disable interactive configuration steps.
-export DEBIAN_FRONTEND=noninteractive
-export DEBCONF_NONINTERACTIVE_SEEN=true
-
 # Disable IPv6 for the current boot.
 sysctl net.ipv6.conf.all.disable_ipv6=1
 
 # Ensure IPv6 stays disabled.
 printf "\nnet.ipv6.conf.all.disable_ipv6 = 1\n" >> /etc/sysctl.conf
 
-# Set the hostname, and then ensure it will resolve properly.
 printf "localhost.localdomain\n" > /etc/hostname
 printf "\n127.0.0.1 localhost.localdomain\n\n" >> /etc/hosts
 
-# Clear out the existing automatic ifup rules.
-sed -i -e '/^auto/d' /etc/network/interfaces
-sed -i -e '/^iface/d' /etc/network/interfaces
-sed -i -e '/^allow-hotplug/d' /etc/network/interfaces
+cat <<-EOF > /etc/netplan/01-netcfg.yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth0:
+      dhcp4: true
+      dhcp6: false
+      optional: true
+EOF
 
-# Ensure the loopback, and default network interface are automatically enabled and then dhcp'ed.
-printf "allow-hotplug eth0\n" >> /etc/network/interfaces
-printf "auto lo\n" >> /etc/network/interfaces
-printf "iface lo inet loopback\n" >> /etc/network/interfaces
-printf "iface eth0 inet dhcp\n" >> /etc/network/interfaces
-
-# Adding a delay so dhclient will work properly.
-printf "pre-up sleep 2\n" >> /etc/network/interfaces
+# Apply the network plan configuration.
+netplan generate
 
 # Install ifplugd so we can monitor and auto-configure nics.
 retry apt-get --assume-yes install ifplugd
@@ -61,11 +61,10 @@ retry apt-get --assume-yes install ifplugd
 sed -i -e 's/INTERFACES=.*/INTERFACES="eth0"/g' /etc/default/ifplugd
 
 # Ensure the networking interfaces get configured on boot.
-systemctl enable networking.service
+systemctl enable systemd-networkd.service
 
 # Ensure ifplugd also gets started, so the ethernet interface is monitored.
 systemctl enable ifplugd.service
 
 # Reboot onto the new kernel (if applicable).
 $(shutdown -r +1) &
-

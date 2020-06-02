@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# If the TERM environment variable is missing, then tput may produce spurrious error messages.
+if [[ ! -n "$TERM" ]] || [[ "$TERM" -eq "dumb" ]]; then
+  export TERM="vt100"
+fi
+
 retry() {
   local COUNT=1
   local RESULT=0
@@ -37,24 +42,26 @@ error() {
 export DEBIAN_FRONTEND=noninteractive
 export DEBCONF_NONINTERACTIVE_SEEN=true
 
-# Temporarily disable IPv6, so packages download properly. 
-# A more permanent solution is applied by the network configuration script.
+# Temporarily disable IPv6, update the nameservers so packages download
+# properly. A more permanent soulution is applied by the network
+# configuration script.
 sysctl net.ipv6.conf.all.disable_ipv6=1
 
+printf "nameserver 1.1.1.1\nnameserver 1.0.0.1\nnameserver 8.8.8.8\n" > /etc/resolv.conf
+
 # Disable upgrades to new releases.
-if [ -f /etc/update-manager/release-upgrades ]; then
-	sed -i -e 's/^Prompt=.*$/Prompt=never/' /etc/update-manager/release-upgrades
-fi
+sed -i -e 's/^Prompt=.*$/Prompt=never/' /etc/update-manager/release-upgrades;
 
 # If the apt configuration directory exists, we add our own config options.
 if [ -d /etc/apt/apt.conf.d/ ]; then
-	# Disable periodic activities of apt.
-	printf "APT::Periodic::Enable \"0\";\n" >> /etc/apt/apt.conf.d/10periodic
 
-	# Enable retries, which should reduce the number box buld failures resulting from a temporal network problems.
-	printf "APT::Periodic::Enable \"0\";\n" >> /etc/apt/apt.conf.d/20retries
+# Disable periodic activities of apt.
+printf "APT::Periodic::Enable \"0\";\n" >> /etc/apt/apt.conf.d/10periodic
+
+# Enable retries, which should reduce the number box buld failures resulting from a temporal network problems.
+printf "APT::Periodic::Enable \"0\";\n" >> /etc/apt/apt.conf.d/20retries
+
 fi
-
 # Keep the daily apt updater from deadlocking our installs.
 systemctl stop apt-daily.service apt-daily.timer
 systemctl stop snapd.service snapd.socket snapd.refresh.timer
@@ -68,4 +75,3 @@ retry apt-get --assume-yes -o Dpkg::Options::="--force-confnew" dist-upgrade; er
 
 # needed to avoid debconf config errors
 retry apt-get --assume-yes install libterm-readline-perl-perl; error
-
