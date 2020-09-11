@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# If the TERM environment variable is missing, then tput may produce spurrious error messages.
+if [[ ! -n "$TERM" ]] || [[ "$TERM" -eq "dumb" ]]; then
+  export TERM="vt100"
+fi
+
 retry() {
   local COUNT=1
   local RESULT=0
@@ -32,6 +37,10 @@ error() {
         exit 1
     fi
 }
+
+# To allow for autmated installs, we disable interactive configuration steps.
+export DEBIAN_FRONTEND=noninteractive
+export DEBCONF_NONINTERACTIVE_SEEN=true
 
 retry apt-get --assume-yes install cloud-guest-utils; error
 

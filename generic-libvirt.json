@@ -7,37 +7,6 @@
     {
       "scripts": [
         "scripts/ubuntu/apt.sh",
-        "scripts/ubuntu1604/network.sh"
-      ],
-      "type": "shell",
-      "start_retry_timeout": "15m",
-      "expect_disconnect": "true",
-      "only": [
-        "generic-ubuntu1604-libvirt"
-      ]
-    },
-    {
-      "scripts": [
-        "scripts/ubuntu/floppy.sh",
-        "scripts/ubuntu/vagrant.sh",
-        "scripts/ubuntu/motd.sh",
-        "scripts/ubuntu/fixtty.sh",
-        "scripts/ubuntu/nfs.sh",
-        "scripts/ubuntu/cloud.sh",
-        "scripts/ubuntu/qemu.sh",
-        "scripts/ubuntu/cleanup.sh"
-      ],
-      "type": "shell",
-      "pause_before": "120s",
-      "start_retry_timeout": "15m",
-      "expect_disconnect": "true",
-      "only": [
-        "generic-ubuntu1604-libvirt"
-      ]
-    },
-    {
-      "scripts": [
-        "scripts/ubuntu/apt.sh",
         "scripts/ubuntu1804/network.sh"
       ],
       "type": "shell",
@@ -68,6 +37,37 @@
     },
     {
       "scripts": [
+        "scripts/ubuntu/apt.sh",
+        "scripts/ubuntu2004/network.sh"
+      ],
+      "type": "shell",
+      "start_retry_timeout": "15m",
+      "expect_disconnect": "true",
+      "only": [
+        "generic-ubuntu2004-libvirt"
+      ]
+    },
+    {
+      "scripts": [
+        "scripts/ubuntu/floppy.sh",
+        "scripts/ubuntu/vagrant.sh",
+        "scripts/ubuntu/motd.sh",
+        "scripts/ubuntu/fixtty.sh",
+        "scripts/ubuntu/nfs.sh",
+        "scripts/ubuntu/cloud.sh",
+        "scripts/ubuntu/qemu.sh",
+        "scripts/ubuntu/cleanup.sh"
+      ],
+      "type": "shell",
+      "pause_before": "120s",
+      "start_retry_timeout": "15m",
+      "expect_disconnect": "true",
+      "only": [
+        "generic-ubuntu2004-libvirt"
+      ]
+    },
+    {
+      "scripts": [
         "scripts/common/motd.sh",
         "scripts/common/keys.sh",
         "scripts/common/machine.sh",
@@ -80,59 +80,6 @@
     }
   ],
   "builders": [
-    {
-      "type": "qemu",
-      "name": "generic-ubuntu1604-libvirt",
-      "vm_name": "generic-ubuntu1604-libvirt",
-      "output_directory": "output/generic-ubuntu1604-libvirt",
-      "accelerator": "kvm",
-      "qemu_binary": "/usr/bin/kvm",
-      "boot_wait": "20s",
-      "boot_command": [
-        "<enter><wait>",
-        "<f6><esc>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
-        "<bs><bs><bs>",
-        "/install/vmlinuz ",
-        "initrd=/install/initrd.gz ",
-        "auto-install/enable=true ",
-        "debconf/priority=critical ",
-        "ipv6.disable_ipv6=1 net.ifnames=0 biosdevname=0 preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/generic.ubuntu1604.vagrant.cfg<wait> ",
-        "<enter>"
-      ],
-      "format": "qcow2",
-      "disk_size": "{{ user `disk_size` }}",
-      "disk_discard": "unmap",
-      "disk_cache": "unsafe",
-      "disk_compression": true,
-      "disk_interface": "virtio-scsi",
-      "net_device": "virtio-net",
-      "cpus": 2,
-      "memory": 2048,
-      "qemuargs": [
-        [
-          "-drive",
-          "if=none,file=output/generic-ubuntu1604-libvirt/generic-ubuntu1604-libvirt,id=drive0,cache=unsafe,discard=unmap,detect-zeroes=unmap,format=qcow2"
-        ]
-      ],
-      "http_directory": "http",
-      "headless": true,
-      "iso_url": "https://mirrors.kernel.org/ubuntu-releases/16.04.6/ubuntu-16.04.6-server-amd64.iso",
-      "iso_checksum": "16afb1375372c57471ea5e29803a89a5a6bd1f6aabea2e5e34ac1ab7eb9786ac",
-      "iso_checksum_type": "sha256",
-      "ssh_username": "root",
-      "ssh_password": "vagrant",
-      "ssh_port": 22,
-      "ssh_wait_timeout": "3600s",
-      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now"
-    },
     {
       "type": "qemu",
       "name": "generic-ubuntu1804-libvirt",
@@ -181,8 +128,65 @@
       ],
       "http_directory": "http",
       "headless": true,
-      "iso_url": "http://cdimage.ubuntu.com/ubuntu/releases/18.04.2/release/ubuntu-18.04.2-server-amd64.iso",
-      "iso_checksum": "a2cb36dc010d98ad9253ea5ad5a07fd6b409e3412c48f1860536970b073c98f5",
+      "iso_url": "http://cdimage.ubuntu.com/ubuntu/releases/18.04.5/release/ubuntu-18.04.5-server-amd64.iso",
+      "iso_checksum": "8c5fc24894394035402f66f3824beb7234b757dd2b5531379cb310cedfdf0996",
+      "iso_checksum_type": "sha256",
+      "ssh_username": "root",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "3600s",
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now"
+    },
+	{
+      "type": "qemu",
+      "name": "generic-ubuntu2004-libvirt",
+      "vm_name": "generic-ubuntu2004-libvirt",
+      "output_directory": "output/generic-ubuntu2004-libvirt",
+      "accelerator": "kvm",
+      "qemu_binary": "/usr/bin/kvm",
+      "boot_wait": "1s",
+      "boot_command": [
+        "<tab><wait><tab><wait><tab><wait><tab><wait>",
+        "<tab><wait><tab><wait><tab><wait><tab><wait>",
+        "<tab><wait><tab><wait><tab><wait><tab><wait>",
+        "<esc><f6><esc>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+        "/install/vmlinuz ",
+        "initrd=/install/initrd.gz ",
+        "fb=false ",
+        "auto-install/enable=true ",
+        "debconf/priority=critical ",
+        "console-setup/ask_detect=false ",
+        "debconf/frontend=noninteractive ",
+        "ipv6.disable_ipv6=1 net.ifnames=0 biosdevname=0 preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/generic.ubuntu2004.vagrant.cfg<wait> ",
+        " --- <enter>"
+      ],
+      "format": "qcow2",
+      "disk_size": "{{ user `disk_size` }}",
+      "disk_discard": "unmap",
+      "disk_cache": "unsafe",
+      "disk_compression": true,
+      "disk_interface": "virtio-scsi",
+      "net_device": "virtio-net",
+      "cpus": 2,
+      "memory": 2048,
+      "qemuargs": [
+        [
+          "-drive",
+          "if=none,file=output/generic-ubuntu2004-libvirt/generic-ubuntu2004-libvirt,id=drive0,cache=unsafe,discard=unmap,detect-zeroes=unmap,format=qcow2"
+        ]
+      ],
+      "http_directory": "http",
+      "headless": true,
+      "iso_url": "http://cdimage.ubuntu.com/ubuntu-legacy-server/releases/20.04.1/release/ubuntu-20.04.1-legacy-server-amd64.iso",
+      "iso_checksum": "f11bda2f2caed8f420802b59f382c25160b114ccc665dbac9c5046e7fceaced2",
       "iso_checksum_type": "sha256",
       "ssh_username": "root",
       "ssh_password": "vagrant",
