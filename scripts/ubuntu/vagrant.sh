@@ -25,3 +25,15 @@ chown -R vagrant:vagrant /home/vagrant/.ssh
 
 # Mark the vagrant box build time.
 date --utc > /etc/vagrant_box_build_time
+
+# lets enable console access
+# https://govps.com/knowledgebase/2/Enabling-the-Linux-Serial-Console.html
+systemctl enable serial-getty@ttyS0.service
+systemctl start serial-getty@ttyS0.service
+
+# stop all the apt auto stuff
+systemctl stop apt-daily-upgrade.timer
+systemctl disable apt-daily-upgrade.timer
+systemctl stop apt-daily.timer
+systemctl disable apt-daily.timer
+systemctl daemon-reload

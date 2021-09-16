@@ -4,8 +4,8 @@ sudo true
 
 CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd -P)"
 
-export UBUNTU_1804_VERSION=1.0.3
-export UBUNTU_2004_VERSION=1.0.1
+export UBUNTU_1804_VERSION=1.0.4
+export UBUNTU_2004_VERSION=1.0.2
 
 mkdir -p $CURRENT_DIR/output
 

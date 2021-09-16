@@ -1,7 +1,7 @@
 {
   "variables": {
     "box_version": "{{env `VERSION`}}",
-    "disk_size": "67584"
+    "disk_size": "150000"
   },
   "provisioners": [
     {
