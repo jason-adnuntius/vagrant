@@ -1,0 +1,38 @@
+#!/usr/bin/expect -f
+
+set fp [open vm.name r]
+set name [read -nonewline $fp]
+close $fp
+
+set timeout 10
+spawn virsh --connect qemu:///system console $name
+expect {
+	"Escape character" {send "\r\r" ; exp_continue}
+	"Escape character" {send "\r\r" ; exp_continue} 
+	"login:" {send "manjaro\r"; exp_continue}
+	"Password:" {send "manjaro\r";} 
+}
+# fixme - this expects a unicode character first as part of code
+expect "\r\n\u001b"
+
+send "echo '#!/bin/bash' > install.sh\n"
+set fp [open install.sh r]
+while {[gets $fp line] != -1} {
+  send "echo \"$line\" >> install.sh\n"
+}
+close $fp
+send "chmod 777 install.sh\n"
+
+set fp2 [open chroot.sh r]
+send "echo '#!/bin/bash' > chroot.sh\n"
+while {[gets $fp line] != -1} {
+  send "echo \"$line\" >> chroot.sh\n"
+}
+send "chmod 777 chroot.sh\n"
+close $fp
+set timeout 1800
+#send "sudo ./install.sh\n"
+send "exit\n"
+expect "login:"
+send ""
+expect eof

@@ -1,0 +1,16 @@
+#!/usr/bin/expect -f
+
+set fp [open vm.name r]
+set name [read -nonewline $fp]
+close $fp
+
+set timeout 10
+spawn virsh --connect qemu:///system console $name
+expect {
+	"Escape character" {send "\r\r" ; exp_continue}
+	"Escape character" {send "\r\r" ; exp_continue} 
+	"login:" {send "manjaro\r"; exp_continue}
+	"Password:" {send "manjaro\r";} 
+}
+# fixme - this expects a unicode character first as part of code
+expect "\r\n\u001b"
