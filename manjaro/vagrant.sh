@@ -19,7 +19,7 @@ sudo cp $volume box.img
 sudo chown $USER: box.img
 
 [ -f manjaro-libvirt.box ] && rm manjaro-libvirt.box
-tar cvzf manjaro-libvirt.box ./metadata.json ./Vagrantfile ./box.img
+tar cvzf manjaro-libvirt.box ./metadata.json ./box.img
 
 vagrant box remove -f adnuntius/manjaro --box-version 0
 vagrant box add --name adnuntius/manjaro manjaro-libvirt.box
