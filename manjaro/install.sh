@@ -9,7 +9,7 @@ pacman-mirrors --geoip || exit $?
 pacman-key --init || exit $?
 pacman-key --populate archlinux manjaro || exit $?
 pacman --sync --noconfirm --refresh archlinux-keyring manjaro-keyring || exit $?
-basestrap /mnt base linux61 dhcpcd networkmanager grub mkinitcpio vi sudo links openssh cloud-guest-utils lsb-release || exit $?
+basestrap /mnt base linux61 dhcpcd grub mkinitcpio vi sudo openssh cloud-guest-utils lsb-release || exit $?
 fstabgen -U -p /mnt >> /mnt/etc/fstab || exit $?
 cp chroot.sh /mnt/ || exit $?
 cp /etc/lsb-release /mnt/etc/lsb-release
