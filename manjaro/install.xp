@@ -30,8 +30,9 @@ while {[gets $fp line] != -1} {
 }
 send "chmod 777 chroot.sh\n"
 close $fp
-set timeout 1800
-#send "sudo ./install.sh\n"
+# allow the installation to take up to 1 hour, which is ridiculous
+set timeout 3600
+send "sudo ./install.sh\n"
 send "exit\n"
 expect "login:"
 send ""

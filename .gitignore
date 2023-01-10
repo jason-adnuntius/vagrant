@@ -1,6 +1,7 @@
 .idea
 .vagrant
 *.img
+*.box
 *.qcow2
 *.iso
 vm.name

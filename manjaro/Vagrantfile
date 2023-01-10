@@ -3,4 +3,3 @@ Vagrant.configure("2") do |config|
     libvirt.driver = "kvm"
   end
 end
-

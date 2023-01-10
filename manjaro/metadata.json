@@ -1,17 +1,5 @@
 {
-  "name": "adnuntius/manjaro",
-  "description": "Minimal manjaro base image",
-  "versions": [
-    {
-      "version": "0.1.0",
-      "providers": [
-        {
-          "name": "libvirt",
-          "format": "qcow2",
-          "virtual_size": 2
-        }
-      ]
-    }
-  ]
+  "provider"     : "libvirt",
+  "format"       : "qcow2",
+  "virtual_size" : 2
 }
-
