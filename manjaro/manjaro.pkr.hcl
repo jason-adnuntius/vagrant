@@ -47,7 +47,7 @@ build {
     inline = [
       "/usr/bin/curl -O $PACKER_HTTP_ADDR/install.sh",
       "/usr/bin/curl -O $PACKER_HTTP_ADDR/chroot.sh",
-      "ls -la *.sh && chmod 777 *.sh",
+      "chmod 777 *.sh",
       "/usr/bin/sudo ./install.sh"
     ]
   }
